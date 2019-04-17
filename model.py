@@ -6,6 +6,7 @@ The main CheXNet model implementation.
 
 
 import os
+import re
 import numpy as np
 import torch
 import torch.nn as nn
@@ -37,7 +38,24 @@ def main():
     if os.path.isfile(CKPT_PATH):
         print("=> loading checkpoint")
         checkpoint = torch.load(CKPT_PATH)
-        model.load_state_dict(checkpoint['state_dict'])
+        #*************************debug*************************
+        state_dict=checkpoint['state_dict']
+        #print("before")
+        #print(next(iter(state_dict)))
+        #print("=> transforming parameter key names")
+        pattern=re.compile(
+                r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$'
+                )
+        for key in list(state_dict.keys()):
+            res=pattern.match(key)
+            if res:
+                new_key=res.group(1)+res.group(2)
+                state_dict[new_key]=state_dict[key]
+                del state_dict[key]
+        #*************************debug*************************
+        #print("after")
+        #print(next(iter(state_dict)))
+        model.load_state_dict(state_dict)
         print("=> loaded checkpoint")
     else:
         print("=> no checkpoint found")
