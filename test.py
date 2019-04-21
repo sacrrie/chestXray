@@ -30,9 +30,9 @@ predictor=torch.nn.DataParallel(predictor).cuda()
 #check saved checkpoint
 if os.path.isfile(CP_PATH):
     print("checkpoint found, loading...")
-    cpoint=torch.load(CP_PATH)
+    cp=torch.load(CP_PATH)
     #In case of loading to higher versions, update dictionary index
-    state_dict=chekpoint['state_dict']
+    state_dict=cp['state_dict']
     pattern=re.compile(
         r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$'
         )
@@ -49,20 +49,19 @@ else:
     
 normalize=Normalize([0.485,0.456,0.406],[0.229,0.224,0.225])
 processed=XrayDataset(
-    input_dir=IMG_DIR
-    image_list=TEST
+    input_dir=IMG_DIR,
+    image_list=TEST,
     transform=Compose([
-        Resize(512),
+        Resize(256),
         TenCrop(224),
         Lambda(
             Lambda crops: torch.stack([
                 ToTensor()(crop) for crop in crops
-                ]))
+                ])),
         Lambda(
             Lambda crops: torch.stack([
                 normalize(crop) for crop in crops
                 ]))
-        )
         ])
     )
     
@@ -70,13 +69,11 @@ testset=DataLoader(dataset=processed,batch_size=BATCH,shuffle=False,num_workers=
 
 truth=torch.FloatTensor().cuda()
 predicted=torch.FloatTensor().cuda()
-#TODO:从这往后的是预测的代码，需要补充上训练的代码
 predictor.eval()
 with torch.no_grad():
     for i,(inp,target) in enumerate(testset):
         target=target.cuda()
         truth=torch.cat((truth,target),0)
-        #TODO: ??? what do they mean???
         bs,n_crops,c,h,w=inp.size()
         inputs=torch.autograd.Variable(inp.view(-1,c,h,w).cuda(),volatile=True)
         outputs=predictor(inputs).view(bs,n_crops,-1).mean(1).data

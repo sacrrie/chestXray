@@ -6,7 +6,7 @@ from PIL import Image
 from sklearn.metrics import roc_auc_score
 
 class XrayDataset(Dataset):
-    def __init__(self, input_dir,image_list,transform=transforms.Resize(256)):
+    def __init__(self, input_dir,image_list,transform=transforms.Resize(512)):
         """
         Arguments:
         input_dir: the directory contains image
