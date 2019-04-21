@@ -1,7 +1,7 @@
 #utils.py: various helper functions
 #netModel.py: modified and improved nn model
 from utils import *
-from netModel import *
+from DenseModel import *
 import os
 import re
 import torchvision
