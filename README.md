@@ -1,5 +1,5 @@
-# CS6250 Final Project Chest X-ray Diagnosis Code Running Instructions
-## Guanyu Yan, GTID gyan31, Team 82 
+# Project Chest X-ray Diagnosis Code Running Instructions
+## Open for review purpose only
 
 Third party libraries requirements:
 + numpy
@@ -40,4 +40,9 @@ It will take sometime to finish running depends on your computer specification.
 After the script finished running. Resuls will appear in the terminal. 
 
 *Thank you for your effort reviewing my project, have a good day!*
+
+
+__Reference__
+[Zoogzog/Chexnet](github.com/zoogzog/chexnet)
+[Arnoweng/CheXNet](github.com/arnoweng/CheXNet)
 
