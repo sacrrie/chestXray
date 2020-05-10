@@ -43,6 +43,6 @@ After the script finished running. Resuls will appear in the terminal.
 
 
 __Reference__
-[Zoogzog/Chexnet](github.com/zoogzog/chexnet)
-[Arnoweng/CheXNet](github.com/arnoweng/CheXNet)
+[Zoogzog/Chexnet](https://github.com/zoogzog/chexnet)
+[Arnoweng/CheXNet](https://github.com/arnoweng/CheXNet)
 
